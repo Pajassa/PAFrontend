@@ -2,14 +2,13 @@
 const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
   const getStatusConfig = (status: string) => {
     switch (status.toLowerCase()) {
-      case 'active':
-        return { color: 'bg-green-500', text: '✓ Active' };
+      
       case 'extended':
-        return { color: 'bg-blue-500', text: '✓ Extended' };
+        return { color: 'bg-blue-500', text: 'Extended' };
       case 'cancelled':
-        return { color: 'bg-red-500', text: '⊘ Cancelled' };
-      case 'completed':
-        return { color: 'bg-gray-500', text: '✓ Completed' };
+        return { color: 'bg-red-500', text: 'Cancelled' };
+      case 'confiremed':
+        return { color: 'bg-gray-500', text: 'Confiremed' };
       default:
         return { color: 'bg-blue-500', text: '◉ New' };
     }

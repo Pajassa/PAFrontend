@@ -42,7 +42,7 @@ const ReservationList: React.FC = () => {
       // Prepare email data from reservation
       const emailData = {
         guestemail: booking.guest_email || '',
-        subject: `Fwd: Guest Booking Confirmation (${booking.reservation_no})`,
+        subject: `Guest Booking Confirmation (${booking.reservation_no})`,
         reservationNo: booking.reservation_no,
         apartmentname: booking.property_type || '',
         contactperson: booking.contact_person || '',
@@ -56,13 +56,15 @@ const ReservationList: React.FC = () => {
         modeofpayment: booking.payment_mode, // Default or from booking if available
         guesttype: booking.client_name || 'Corporate',
         roomtype: booking.room_type || '',
-        occupancy: `${booking.occupancy} Person(s)`,
+        occupancy: booking.occupancy,
         created_at:booking.created_at,
         host_email:booking.host_email,
         clientName:booking.client_name,
         address1:booking.address1,
         address2:booking.address2,
         address3:booking.address3,
+        base_rate:booking.base_rate,
+        taxes:booking.taxes,
         inclusions: 'Complimentary breakfast, Wi-Fi, and housekeeping' // Default inclusions
       };
 

@@ -336,7 +336,7 @@ const ReservationManagementSystem: React.FC = () => {
           adminEmail: data.admin_email || ''
         });
 
-        console.log("fgjdfksg", data.property_url);
+        
 
         // Set Apartment Info
         setApartmentInfo({
