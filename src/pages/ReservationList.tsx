@@ -65,8 +65,11 @@ const ReservationList: React.FC = () => {
         address3:booking.address3,
         base_rate:booking.base_rate,
         taxes:booking.taxes,
+        services: booking.services,
         inclusions: 'Complimentary breakfast, Wi-Fi, and housekeeping' // Default inclusions
       };
+      console.log("Services",booking);
+      
 
 
       console.log('Sending email with data:', emailData);

@@ -1,4 +1,19 @@
 // Types matching your database structure
+
+
+type Services = {
+  wifi?: boolean;
+  vegLunch?: boolean;
+  vegDinner?: boolean;
+  nonVegLunch?: boolean;
+  nonVegDinner?: boolean;
+  morningBreakfast?: boolean;
+};
+
+
+
+
+
 export interface Reservation {
   id: number;
   reservation_no: string;
@@ -51,5 +66,7 @@ export interface Reservation {
   apartment_type:string;
   host_payment_mode:string;
   host_email:string;
+  
+  services: Services;
 
 }
