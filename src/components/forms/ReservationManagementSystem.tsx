@@ -243,6 +243,7 @@ const ReservationManagementSystem: React.FC = () => {
   const [roomSelection, setRoomSelection] = useState<string[]>([]);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [reservationId, setReservationId] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
 
   // Shared dates and times state
   const [sharedCheckInDate, setSharedCheckInDate] = useState<string>('');
@@ -336,7 +337,7 @@ const ReservationManagementSystem: React.FC = () => {
           adminEmail: data.admin_email || ''
         });
 
-        
+
 
         // Set Apartment Info
         setApartmentInfo({
@@ -655,7 +656,7 @@ const ReservationManagementSystem: React.FC = () => {
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
-    
+
 
     if (!selectedClient) newErrors.client = "Client selection is required";
     if (!selectedProperty) newErrors.property = "Property selection is required";
@@ -709,6 +710,8 @@ const ReservationManagementSystem: React.FC = () => {
 
   // Handle form submission
   const handleSave = async () => {
+    if (isSaving) return;
+
     if (!validateForm()) {
       alert("Please fix the validation errors before saving.");
       return;
@@ -756,6 +759,7 @@ const ReservationManagementSystem: React.FC = () => {
       return;
     }
 
+    setIsSaving(true);
     try {
       const url = isEditMode
         ? `${API_BASE_URL}api/updateReservation`
@@ -791,6 +795,8 @@ const ReservationManagementSystem: React.FC = () => {
     } catch (error) {
       console.error(`Error ${isEditMode ? 'updating' : 'saving'} reservation:`, error);
       alert(`Error ${isEditMode ? 'updating' : 'saving'} reservation`);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -947,11 +953,15 @@ const ReservationManagementSystem: React.FC = () => {
       <div className="bg-white p-4 flex justify-end space-x-2 border-b">
         <button
           onClick={handleSave}
-          className={`bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center space-x-2 ${!!dateError ? 'opacity-50 cursor-not-allowed' : ''}`}
-          disabled={!!dateError}
+          className={`bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center space-x-2 ${!!dateError || isSaving ? 'opacity-50 cursor-not-allowed' : ''}`}
+          disabled={!!dateError || isSaving}
         >
-          <Save size={16} />
-          <span>{isEditMode ? 'Update' : 'Save'}</span>
+          {isSaving ? (
+            <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+          ) : (
+            <Save size={16} />
+          )}
+          <span>{isSaving ? 'Saving...' : (isEditMode ? 'Update' : 'Save')}</span>
         </button>
         <button
           onClick={handleCancel}
