@@ -13,7 +13,7 @@ const BookingHistoryModal: React.FC<BookingHistoryModalProps> = ({ isOpen, onClo
   const [loadingHistory, setLoadingHistory] = useState(false);
   const [expandedVersion, setExpandedVersion] = useState<number | null>(null);
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-  console.log("Bokking ", booking);
+
 
 
   useEffect(() => {

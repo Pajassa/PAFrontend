@@ -190,11 +190,17 @@ const ClientForm: React.FC = () => {
         body: JSON.stringify(payload),
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      let result;
+      try {
+        result = await response.json();
+      } catch (e) {
+        // If JSON parsing fails, fall back to status text
+        throw new Error(`Server returned ${response.status}: ${response.statusText}`);
       }
 
-      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.message || `HTTP error! status: ${response.status}`);
+      }
 
       if (result.success || result.message) {
         setMessage({ type: 'success', text: `Client ${isEditMode ? 'updated' : 'created'} successfully!` });
