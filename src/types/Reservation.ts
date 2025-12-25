@@ -14,7 +14,19 @@ type Services = {
 
 
 
+interface AdditionalGuest {
+  guest_name: string;
+  cid: string;
+  cod: string;
+  room_type: string;
+  occupancy: number;
+  address: string;
+  email: string;
+  contact_number: string;
+}
+
 export interface Reservation {
+  additionalGuests?: AdditionalGuest[];
   id: number;
   reservation_no: string;
   client_id: number;
@@ -63,10 +75,10 @@ export interface Reservation {
   state: string;
   zip_code: string;
   updated_at: string;
-  apartment_type:string;
-  host_payment_mode:string;
-  host_email:string;
-  
+  apartment_type: string;
+  host_payment_mode: string;
+  host_email: string;
+
   services: Services;
 
 }

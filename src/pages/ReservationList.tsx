@@ -57,22 +57,24 @@ const ReservationList: React.FC = () => {
         guesttype: booking.client_name || 'Corporate',
         roomtype: booking.room_type || '',
         occupancy: booking.occupancy,
-        created_at:booking.created_at,
-        host_email:booking.host_email,
-        clientName:booking.client_name,
-        address1:booking.address1,
-        address2:booking.address2,
-        address3:booking.address3,
-        base_rate:booking.base_rate,
-        taxes:booking.taxes,
+        created_at: booking.created_at,
+        host_email: booking.host_email,
+        clientName: booking.client_name,
+        address1: booking.address1,
+        address2: booking.address2,
+        address3: booking.address3,
+        base_rate: booking.base_rate,
+        taxes: booking.taxes,
         services: booking.services,
+        additionalGuests: booking.additionalGuests || [],
         inclusions: 'Complimentary breakfast, Wi-Fi, and housekeeping' // Default inclusions
       };
-      console.log("Services",booking);
+
       
+      console.log("Services", booking);
 
 
-      console.log('Sending email with data:', emailData);
+
 
       const response = await fetch(`${API_BASE_URL}api/sendemail`, {
         method: 'POST',
