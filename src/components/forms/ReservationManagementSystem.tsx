@@ -241,6 +241,7 @@ const ReservationManagementSystem: React.FC = () => {
   });
 
   const [roomSelection, setRoomSelection] = useState<string[]>([]);
+  const [availableRooms, setAvailableRooms] = useState<string[]>([]);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [reservationId, setReservationId] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -307,6 +308,19 @@ const ReservationManagementSystem: React.FC = () => {
           property_type: data.property_type || '',
         });
         setPropertySearchTerm(data.address1 || '');
+
+        // Generate Available Rooms based on property data
+        const rooms: string[] = [];
+        const masterCount = data.master_bedroom || 0;
+        const commonCount = data.common_bedroom || 0;
+
+        for (let i = 1; i <= masterCount; i++) {
+          rooms.push(`Master Bedroom-${i}`);
+        }
+        for (let i = 1; i <= commonCount; i++) {
+          rooms.push(`Common Bedroom-${i}`);
+        }
+        setAvailableRooms(rooms);
 
         // Set Shared Dates
         const checkIn = data.check_in_date ? new Date(data.check_in_date).toISOString().split('T')[0] : '';
@@ -599,6 +613,32 @@ const ReservationManagementSystem: React.FC = () => {
       contactNumber: property.contact_number || '',
       propertyThumbnail: property.thumbnail || '',
       propertyUrl: property.property_url || ''
+    }));
+
+    // Reset room selection
+    setRoomSelection([]);
+
+    // Generate Available Rooms
+    const rooms: string[] = [];
+    const masterCount = property.master_bedroom || 0;
+    const commonCount = property.common_bedroom || 0;
+
+    for (let i = 1; i <= masterCount; i++) {
+      rooms.push(`Master Bedroom-${i}`);
+    }
+    for (let i = 1; i <= commonCount; i++) {
+      rooms.push(`Common Bedroom-${i}`);
+    }
+    setAvailableRooms(rooms);
+
+    // Set Default Times from Property
+    setSharedCheckInTime(property.check_in_time || '12:00');
+    setSharedCheckOutTime(property.check_out_time || '11:00');
+
+    setGuestInfo(prev => ({
+      ...prev,
+      checkInTime: property.check_in_time || '12:00',
+      checkOutTime: property.check_out_time || '11:00'
     }));
   };
 
@@ -1227,34 +1267,22 @@ const ReservationManagementSystem: React.FC = () => {
               {/* Room Selection */}
               <div className="mt-4">
                 <h4 className="font-medium mb-2">Select Rooms:</h4>
-                <div className="flex space-x-6">
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      checked={roomSelection.includes('Master Bedroom-1')}
-                      onChange={(e) => handleRoomSelectionChange('Master Bedroom-1', e.target.checked)}
-                      className="rounded"
-                    />
-                    <span>Master Bedroom-1</span>
-                  </label>
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      checked={roomSelection.includes('Master Bedroom-2')}
-                      onChange={(e) => handleRoomSelectionChange('Master Bedroom-2', e.target.checked)}
-                      className="rounded"
-                    />
-                    <span>Master Bedroom-2</span>
-                  </label>
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      checked={roomSelection.includes('Master Bedroom-3')}
-                      onChange={(e) => handleRoomSelectionChange('Master Bedroom-3', e.target.checked)}
-                      className="rounded"
-                    />
-                    <span>Master Bedroom-3</span>
-                  </label>
+                <div className="flex flex-wrap gap-4">
+                  {availableRooms.length > 0 ? (
+                    availableRooms.map((room) => (
+                      <label key={room} className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          checked={roomSelection.includes(room)}
+                          onChange={(e) => handleRoomSelectionChange(room, e.target.checked)}
+                          className="rounded"
+                        />
+                        <span>{room}</span>
+                      </label>
+                    ))
+                  ) : (
+                    <span className="text-gray-500 text-sm">Select a property to see available rooms.</span>
+                  )}
                 </div>
               </div>
 

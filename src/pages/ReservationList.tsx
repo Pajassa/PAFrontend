@@ -51,6 +51,8 @@ const ReservationList: React.FC = () => {
         contactnumberguest: booking.contact_number || '',
         checkin: booking.check_in_date || '',
         checkout: booking.check_out_date || '',
+        check_in_time : booking.check_in_time || '14:00:00',
+        check_out_time:booking.check_out_time || '11:00:00',
         chargeabledays: booking.chargeable_days?.toString() || '',
         amount: `${booking.total_tariff || '0'}`,
         modeofpayment: booking.payment_mode, // Default or from booking if available
@@ -67,6 +69,7 @@ const ReservationList: React.FC = () => {
         taxes: booking.taxes,
         services: booking.services,
         additionalGuests: booking.additionalGuests || [],
+        host_payment_mode:booking.host_payment_mode,
         inclusions: 'Complimentary breakfast, Wi-Fi, and housekeeping' // Default inclusions
       };
 
